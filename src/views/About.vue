@@ -1,16 +1,19 @@
 <template>
   <div class="about">
+    <div id="router" >   
+       <router-link v-bind:class="{'dark-mode' : dark}"   :to="'/'+ this.value_two +'/about'" @click.native="testMethod">Dark Mode</router-link>
+    </div>
     <nav>
       <ul>
-        <li><a href="Home.vue">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li v-bind:class=" { 'dark-mode' : dark } "><a v-bind:class=" { 'dark-mode' : dark } " href="Home.vue">Home</a></li>
+        <li v-bind:class=" { 'dark-mode' : dark } "><a v-bind:class=" { 'dark-mode' : dark } " href="#">About</a></li>
+        <li v-bind:class=" { 'dark-mode' : dark } "><a v-bind:class=" { 'dark-mode' : dark } " href="#">Contact</a></li>
       </ul>
     </nav>
     <ul id="flex">
 
       <li v-for="item in obj" v-bind:key="item">
-        <div class="card">
+        <div class="card" v-bind:class=" { 'dark-mode' : dark } ">
         <img :src="item.image" alt="" srcset="">
         <h2>{{item.title}}</h2>
         <p>{{item.description}}</p>
@@ -18,8 +21,6 @@
       </li>
 
     </ul>
-    <input type="button" value="Dark Mode" v-on:click='changeToDark'>
-
   </div>
 </template>
 
@@ -27,9 +28,14 @@
 export default {
   data() {
     return {
+      value_one: false,
+      value_two: 'light',
+      changeMode: null,
+      dark: false,
+      cookieValue: this.$route.params.mode ,
       obj: [
         {
-          image: 'https://lh3.googleusercontent.com/proxy/0hfxe3CzlmNcp3WcDpZJ3SQ5Mcw1f0QDiYUTyAXHyuCIAKiL6HF4M0uq20CkB-8nHLt9MHr0iJwiwH1uu0RWX2TTa7JfUT3qPr2fMJHZcw',
+          image: 'https://i.ibb.co/HqfwnrY/FF.png',
           title: 'Polo 1.0 TSI Comfortline 70kW (95KS)',
           description: 'Puna cena vozila 15.922 € Specijalna cena vozila -  13.490 € Specijalna cena vozila u saradnji sa Porsche Mobility - 11.990 €*'
         },
@@ -47,18 +53,62 @@ export default {
     }
   },
   methods: {
-    changeToDark() {
-      document.querySelectorAll(".card").forEach((card) => {
-        card.classList.toggle('dark-mode');
-      });
-        document.querySelector("input").classList.toggle('dark-mode');
-        document.querySelectorAll("nav li").forEach((item) => {
-          item.classList.toggle('dark-mode');
-        })
-        document.querySelectorAll("a").forEach((link) => {
-          link.classList.toggle('dark-mode');
-        })
-
+    darkTrue() {
+      if(this.$route.params.mode == "dark") {
+        this.dark = true;
+      } else {
+        this.dark = false;
+      }
+      if(this.mode == "light") {
+        this.mode = "dark"
+      } else {
+        this.mode = "light"
+      }
+    },
+    changeLights() {
+      // if(this.dark == false) {
+      // this.dark = true;
+      // } else {
+      // this.dark = false;
+      // }
+      if(this.mode == "light") {
+        this.mode = "dark";
+      } else {
+        this.mode = "light";
+      }
+    },
+    changeValue() {
+      if(this.dark == false) {
+      this.dark = true;
+      } else {
+        this.dark = false;
+      }
+      if(this.dark == false) {
+        this.mode = "dark"
+      } else {
+        this.mode = "light"
+      }
+    },
+    testMethod() {
+      if(this.value_one == false) {
+      this.value_one = true;
+      } else {
+        this.value_one = false;
+      }
+      if(this.value_two == "light") {
+        this.value_two = "dark";
+      } else {
+        this.value_two = "light"
+      }
+    }
+  },
+  mounted() {
+    this.cookieInstance = new this.$cookie
+    this.cookieInstance.create('lighting', this.cookieValue, 10);
+    if(this.$route.params.mode == "dark") {
+      this.dark = true;
+    } else {
+      this.dark = false;
     }
   }
 }
@@ -125,5 +175,32 @@ input {
 .dark-mode {
   background: #37474F;
   color: #fff;
+}
+.darkmode {
+  background:#000;
+  color: #fff;
+}
+#router {
+  background: #DEE4E7;
+  color: #000;
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  a { 
+    color: #000;
+  font-size: 15pt;
+  font-family: serif;
+  text-decoration: none;
+  display: inline-block;
+  padding: 15px 25px;
+  border: 1px solid #000;
+  }
+  a:hover {
+    cursor: pointer;
+  }
+}
+.newstyle {
+  background: #000;
 }
 </style>

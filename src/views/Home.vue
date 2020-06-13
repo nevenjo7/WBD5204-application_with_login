@@ -38,6 +38,8 @@ export default {
       visible: "password",
       error: "Credentials are not correct",
       hasError: false,
+      cookieInstance: null,
+      cookieValue: null ,
       placeholder: {
         email: 'example@sae.com',
         password: 'Enter your password'
@@ -55,7 +57,14 @@ export default {
     },
     validate: function() {
       if(this.inputEmail === this.email && this.inputPass === this.pass) {
-        this.$router.push('about');
+        this.cookieInstance = new this.$cookie;
+        this.cookieValue = this.cookieInstance.read('lighting');
+        console.log(this.cookieValue);
+        if(this.cookieValue) {
+          console.log(this.cookieValue);
+        this.$router.push('/' + this.cookieValue + '/about');
+        }
+
       } else {
          this.hasError = true;
       }
